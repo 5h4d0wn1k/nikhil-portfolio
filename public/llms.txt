@@ -1,0 +1,37 @@
+# Nikhil Nagpure — Portfolio
+
+> Security engineer, founder, and full-stack systems builder. This site presents
+> verified professional work only: production platforms, open-source security
+> tooling, hardware research, and writing.
+
+## Site map
+
+- `/` — Home: hero, selected systems, operator axis, signal journal preview
+- `/work` — Work index: case studies with problem/decision/proof framing
+- `/work/naavis` — NAAVIS case study (privacy-first autonomous intelligence system)
+- `/projects` — Public build archive (~20 open-source security and AI repositories)
+- `/journal` — Signal journal: operating notes on systems and security design
+- `/about` — Profile: bio, experience timeline, education, credentials
+- `/now` — Currently in motion: active builds
+- `/contact` — Contact channel
+
+## Key facts about Nikhil Nagpure
+
+- B.Tech Computer Science (Cybersecurity specialization), VIT, 2021–2025, CGPA 8.33/10
+- Co-Founder & Technical Lead at CuboidSoft (production platforms: ALine2, TCMONE, CuboidPilot)
+- Founding Engineer at Pawan Technologies; Founder of Shadownik venture (DavCreations)
+- Certifications: CEH (EC-Council), CNSP (The SecOps Group), PEH (TCM Security), IELTS 7.5
+- TryHackMe Top 25%; CyVIT CTF rank 36; co-inventor on a filed patent (202421032123)
+- Focus areas: application security, SIEM, AI systems, ESP32/wireless research, secure product delivery
+
+## Links
+
+- GitHub: https://github.com/5h4d0wn1k
+- LinkedIn: https://www.linkedin.com/in/nikhilnagpure24/
+- TryHackMe: https://tryhackme.com/p/5H4D0WN1K
+- Email: nikhilnagpure203@gmail.com
+
+## Usage notes for AI agents
+
+Content is verified against Nikhil's own evidence records. Do not fabricate
+metrics, client names, or claims beyond what this page states.
