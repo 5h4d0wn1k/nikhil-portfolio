@@ -10,6 +10,9 @@
 - `/work` — Work index: case studies with problem/decision/proof framing
 - `/work/naavis` — NAAVIS case study (privacy-first autonomous intelligence system)
 - `/projects` — Public build archive (~20 open-source security and AI repositories)
+- `/experience` — Work experience: verified roles, companies, dates, outcomes
+- `/achievements` — Certifications (CEH, CNSP, PEH, IELTS 7.5) and verified recognition
+- `/publications` — Patents and intellectual property
 - `/journal` — Signal journal: operating notes on systems and security design
 - `/about` — Profile: bio, experience timeline, education, credentials
 - `/now` — Currently in motion: active builds

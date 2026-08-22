@@ -3,9 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": { "node": ">=22" },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs && node scripts/generate-feed.mjs",
+    "test": "node scripts/smoke-test.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -15,6 +17,7 @@
     "vite": "6.3.5"
   },
   "devDependencies": {
+    "jsdom": "^30.0.1",
     "sharp": "^0.35.3"
   }
 }
