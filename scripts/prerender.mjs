@@ -10,98 +10,104 @@ const shellPath = join(distDir, 'index.html');
 const entryFile = join(scriptDir, 'prerender-entry.jsx');
 const bundlePath = join(scriptDir, '.prerender-bundle.mjs');
 
-const CANONICAL_BASE = 'https://cynik-operator.pages.dev';
+const configPath = join(rootDir, 'src', 'site.config.js');
+const configContent = readFileSync(configPath, 'utf8');
+const urlMatch = configContent.match(/siteUrl:\s*'([^']+)'/);
+const CANONICAL_BASE = urlMatch ? urlMatch[1] : 'https://localhost:3000';
+const nameMatch = configContent.match(/name:\s*'([^']+)'/);
+const SITE_NAME = nameMatch ? nameMatch[1] : 'Portfolio';
+
 const RSS_LINK =
   '<link rel="alternate" type="application/rss+xml" title="Signal Journal RSS" href="/feed.xml"/>';
 
 const ROUTE_META = {
   '/': {
-    title: 'Nikhil Nagpure — Security Engineer & Systems Builder',
+    title: `${SITE_NAME} — Security Engineer & Systems Builder`,
     description:
       'Founder, security practitioner, and full-stack systems builder working across AI systems, application security, hardware research, and production platforms.',
   },
   '/projects': {
-    title: 'Projects — Nikhil Nagpure',
+    title: `Projects — ${SITE_NAME}`,
     description:
       'Every system built or contributed to: open source security tools, AI experiments, production platforms, and hardware research.',
   },
   '/projects/naavis': {
-    title: 'NAAVIS — Nikhil Nagpure',
+    title: `NAAVIS — ${SITE_NAME}`,
     description:
       'A privacy-first autonomous intelligence system: persistent memory, consent-gated perception, action layers, and owner trust controls.',
   },
   '/projects/aline2': {
-    title: 'ALine2 — Nikhil Nagpure',
+    title: `ALine2 — ${SITE_NAME}`,
     description:
       'Full-stack social-media platform: web app, backend API, Android app, and superadmin dashboard — live in production.',
   },
   '/projects/tcmone': {
-    title: 'TCMONE — Nikhil Nagpure',
+    title: `TCMONE — ${SITE_NAME}`,
     description:
       'Ed-tech platform for virtual and physical classes, labs, and student workflows — live at thecodemunk.in.',
   },
   '/projects/davcreations': {
-    title: 'DavCreations — Nikhil Nagpure',
+    title: `DavCreations — ${SITE_NAME}`,
     description:
       'Multivendor commerce platform with full CMS, ERP, and HRM modules — built under Shadownik.',
   },
   '/projects/cuboidpilot': {
-    title: 'CuboidPilot — Nikhil Nagpure',
+    title: `CuboidPilot — ${SITE_NAME}`,
     description:
       'Company management operating system for CuboidSoft — admin workflows, dashboards, and operational tooling.',
   },
   '/projects/comprehensive-pentest-framework': {
-    title: 'Comprehensive Pentest Framework — Nikhil Nagpure',
+    title: `Comprehensive Pentest Framework — ${SITE_NAME}`,
     description:
       'Multi-platform authorised security testing framework with 22+ modules.',
   },
   '/projects/esp32-csi-sensing': {
-    title: 'ESP32 CSI Sensing — Nikhil Nagpure',
+    title: `ESP32 CSI Sensing — ${SITE_NAME}`,
     description:
       'WiFi CSI capture, live visualisation, and presence detection.',
   },
   '/experience': {
-    title: 'Work Experience — Nikhil Nagpure',
+    title: `Work Experience — ${SITE_NAME}`,
     description:
       'Verified roles: Co-Founder & Technical Lead at CuboidSoft, Founding Engineer at Pawan Technologies, Founder of Shadownik, offensive-security internships.',
   },
   '/experience/cuboidsoft': {
-    title: 'CuboidSoft — Nikhil Nagpure',
+    title: `CuboidSoft — ${SITE_NAME}`,
     description:
       'Co-Founder & Technical Lead: engineering lead for production platforms, security-first architecture, and product delivery.',
   },
   '/experience/pawan-technologies': {
-    title: 'Pawan Technologies — Nikhil Nagpure',
+    title: `Pawan Technologies — ${SITE_NAME}`,
     description:
       'Founding Engineer: built the technical foundation, shipped the first production systems, and established engineering practices.',
   },
   '/experience/shadownik': {
-    title: 'Shadownik — Nikhil Nagpure',
+    title: `Shadownik — ${SITE_NAME}`,
     description:
       'Founder: independent security and full-stack venture. DavCreations commerce platform and related systems.',
   },
   '/experience/inlighnx-global': {
-    title: 'Inlighnx Global — Nikhil Nagpure',
+    title: `Inlighnx Global — ${SITE_NAME}`,
     description:
       'Offensive Cybersecurity Intern: penetration testing, vulnerability assessment, and security reporting.',
   },
   '/experience/internship-studio': {
-    title: 'Internship Studio — Nikhil Nagpure',
+    title: `Internship Studio — ${SITE_NAME}`,
     description:
       'Ethical Hacking Intern: security fundamentals, lab exercises, and structured learning.',
   },
   '/achievements': {
-    title: 'Achievements & Certifications — Nikhil Nagpure',
+    title: `Achievements & Certifications — ${SITE_NAME}`,
     description:
       'CEH, CNSP, PEH, IELTS 7.5 certifications; TryHackMe Top 25%; CyVIT CTF rank 36; bug bounty research.',
   },
   '/publications': {
-    title: 'Publications & IP — Nikhil Nagpure',
+    title: `Publications & IP — ${SITE_NAME}`,
     description:
       'Co-inventor on filed Indian patent application 202421032123 plus ongoing writing in the Signal Journal.',
   },
   '/journal': {
-    title: 'Signal Journal — Nikhil Nagpure',
+    title: `Signal Journal — ${SITE_NAME}`,
     description:
       'Notes from the edge of the build: systems design, security engineering, and building in public.',
   },
@@ -118,20 +124,20 @@ const ROUTE_META = {
     description: 'Small, specific notes compound into evidence of how you think.',
   },
   '/about': {
-    title: 'Profile — Nikhil Nagpure',
+    title: `Profile — ${SITE_NAME}`,
     description:
       'One operator, many systems: founder, security practitioner, full-stack engineer, technical researcher.',
   },
   '/now': {
-    title: 'Now — Nikhil Nagpure',
+    title: `Now — ${SITE_NAME}`,
     description: 'Currently in motion: NAAVIS, wireless research, bug bounty, and open source.',
   },
   '/education': {
-    title: 'Education — Nikhil Nagpure',
+    title: `Education — ${SITE_NAME}`,
     description: 'B.Tech CSE Cybersecurity from VIT (CGPA 8.33), CEH, CNSP, PEH, IELTS 7.5 certifications.',
   },
   '/contact': {
-    title: 'Contact — Nikhil Nagpure',
+    title: `Contact — ${SITE_NAME}`,
     description: 'For selected product, security, AI, and systems work.',
   },
 };

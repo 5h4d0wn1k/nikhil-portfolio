@@ -1,4 +1,15 @@
 import sharp from 'sharp';
+import { readFileSync } from 'node:fs';
+
+const configPath = new URL('../src/site.config.js', import.meta.url);
+const configContent = readFileSync(configPath, 'utf8');
+const nameMatch = configContent.match(/name:\s*'([^']+)'/);
+const SITE_NAME = nameMatch ? nameMatch[1] : 'Portfolio';
+const nameParts = SITE_NAME.split(' ');
+const FIRST_NAME = nameParts[0] || 'Portfolio';
+const LAST_NAME = nameParts.slice(1).join(' ') || '';
+const SITE_URL_MATCH = configContent.match(/siteUrl:\s*'([^']+)'/);
+const SITE_URL = SITE_URL_MATCH ? SITE_URL_MATCH[1] : 'localhost:3000';
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
   <defs>
@@ -16,10 +27,10 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
   <circle cx="1010" cy="120" r="220" fill="none" stroke="#d7ff3f" stroke-opacity="0.12" stroke-width="1.5"/>
   <circle cx="1010" cy="120" r="150" fill="none" stroke="#d7ff3f" stroke-opacity="0.18" stroke-width="1.5"/>
   <text x="80" y="180" font-family="Arial, sans-serif" font-size="26" letter-spacing="8" fill="#d7ff3f">SYSTEMS BUILDER · INDIA / WORLDWIDE</text>
-  <text x="74" y="330" font-family="Arial Black, Arial, sans-serif" font-size="128" font-weight="900" letter-spacing="-4" fill="#f1ede4">NIKHIL</text>
-  <text x="74" y="450" font-family="Arial Black, Arial, sans-serif" font-size="128" font-weight="900" letter-spacing="-4" fill="none" stroke="#f1ede4" stroke-opacity="0.85">NAGPURE</text>
+  <text x="74" y="330" font-family="Arial Black, Arial, sans-serif" font-size="128" font-weight="900" letter-spacing="-4" fill="#f1ede4">${FIRST_NAME.toUpperCase()}</text>
+  <text x="74" y="450" font-family="Arial Black, Arial, sans-serif" font-size="128" font-weight="900" letter-spacing="-4" fill="none" stroke="#f1ede4" stroke-opacity="0.85">${LAST_NAME.toUpperCase()}</text>
   <text x="80" y="530" font-family="Arial, sans-serif" font-size="30" fill="#b8b3a6">Founder · Security practitioner · Full-stack systems architect.</text>
-  <text x="80" y="578" font-family="Courier New, monospace" font-size="22" fill="#d7ff3f">cynik-operator.pages.dev</text>
+  <text x="80" y="578" font-family="Courier New, monospace" font-size="22" fill="#d7ff3f">${new URL(SITE_URL).hostname}</text>
 </svg>`;
 
 await sharp(Buffer.from(svg)).png().toFile('public/og-image.png');

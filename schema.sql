@@ -1,3 +1,11 @@
+CREATE TABLE IF NOT EXISTS config (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_config_key ON config(key);
+
 -- Projects table
 CREATE TABLE IF NOT EXISTS projects (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -8,10 +16,10 @@ CREATE TABLE IF NOT EXISTS projects (
   color TEXT NOT NULL DEFAULT 'acid',
   summary TEXT,
   description TEXT,
-  tech TEXT, -- JSON array
-  highlights TEXT, -- JSON array
-  links TEXT, -- JSON array of {label, url}
-  proof TEXT, -- JSON array
+  tech TEXT,
+  highlights TEXT,
+  links TEXT,
+  proof TEXT,
   number TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -27,13 +35,12 @@ CREATE TABLE IF NOT EXISTS work_experience (
   status TEXT NOT NULL DEFAULT 'COMPLETED',
   summary TEXT,
   description TEXT,
-  responsibilities TEXT, -- JSON array
-  tech TEXT, -- JSON array
-  products TEXT, -- JSON array
+  responsibilities TEXT,
+  tech TEXT,
+  products TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Index for fast lookups
 CREATE INDEX IF NOT EXISTS idx_projects_slug ON projects(slug);
 CREATE INDEX IF NOT EXISTS idx_experience_slug ON work_experience(slug);

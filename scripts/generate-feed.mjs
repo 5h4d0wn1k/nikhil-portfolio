@@ -1,8 +1,14 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { posts } from '../src/content.js';
 
-const SITE = 'https://cynik-operator.pages.dev';
+const configPath = new URL('../src/site.config.js', import.meta.url);
+const configContent = readFileSync(configPath, 'utf8');
+const urlMatch = configContent.match(/siteUrl:\s*'([^']+)'/);
+const SITE = urlMatch ? urlMatch[1] : 'http://localhost:3000';
+const nameMatch = configContent.match(/name:\s*'([^']+)'/);
+const SITE_NAME = nameMatch ? nameMatch[1] : 'Portfolio';
+
 const outDir = process.argv[2] || 'dist';
 
 const esc = (s) =>
@@ -42,7 +48,7 @@ const items = posts
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Nikhil Nagpure — Signal Journal</title>
+    <title>${SITE_NAME} — Signal Journal</title>
     <link>${SITE}/journal</link>
     <description>Notes on security engineering, systems design, and building in public.</description>
     <language>en</language>
