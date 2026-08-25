@@ -5,7 +5,7 @@ import { join, extname } from 'path';
 
 const dist = join(process.cwd(), 'dist');
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.xml': 'application/xml', '.txt': 'text/plain' };
-const routes = ['/', '/work', '/work/naavis', '/work/aline2', '/work/tcmone', '/work/davcreations', '/work/cuboidpilot', '/projects', '/experience', '/achievements', '/publications', '/education', '/journal', '/journal/systems-over-features', '/about', '/now', '/contact'];
+const routes = ['/', '/projects', '/projects/naavis', '/projects/aline2', '/projects/tcmone', '/projects/davcreations', '/projects/cuboidpilot', '/projects/comprehensive-pentest-framework', '/projects/esp32-csi-sensing', '/experience', '/experience/cuboidsoft', '/experience/pawan-technologies', '/experience/shadownik', '/experience/inlighnx-global', '/experience/internship-studio', '/achievements', '/publications', '/education', '/journal', '/journal/systems-over-features', '/about', '/now', '/contact'];
 const server = createServer((req, res) => {
   const path = decodeURIComponent(req.url.split('?')[0]);
   const candidate = join(dist, path);
@@ -18,9 +18,13 @@ const server = createServer((req, res) => {
 await new Promise(r => server.listen(4199, r));
 
 const expect = {
-  '/': 'SELECTED SYSTEMS', '/work': 'WORK INDEX', '/work/naavis': 'NAAVIS',
-  '/work/aline2': 'ALINE2', '/work/tcmone': 'TCMONE', '/work/davcreations': 'DAVCREATIONS', '/work/cuboidpilot': 'CUBOIDPILOT',
-  '/projects': 'BUILD ARCHIVE', '/experience': 'Co-Founder & Technical Lead',
+  '/': 'SELECTED SYSTEMS',
+  '/projects': 'BUILD ARCHIVE', '/projects/naavis': 'NAAVIS', '/projects/aline2': 'ALINE2',
+  '/projects/tcmone': 'TCMONE', '/projects/davcreations': 'DAVCREATIONS', '/projects/cuboidpilot': 'CUBOIDPILOT',
+  '/projects/comprehensive-pentest-framework': 'PENTEST', '/projects/esp32-csi-sensing': 'ESP32',
+  '/experience': 'Co-Founder & Technical Lead', '/experience/cuboidsoft': 'CUBOIDSOFT',
+  '/experience/pawan-technologies': 'PAWAN', '/experience/shadownik': 'SHADOWNIK',
+  '/experience/inlighnx-global': 'INLIGHNX', '/experience/internship-studio': 'INTERNSHIP',
   '/achievements': 'EC-COUNCIL', '/publications': 'Self-Cleaning Glasses Case System',
   '/education': 'B.TECH',
   '/journal': 'SIGNAL JOURNAL', '/journal/systems-over-features': 'invariants',

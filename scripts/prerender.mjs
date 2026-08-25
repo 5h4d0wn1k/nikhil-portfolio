@@ -20,25 +20,75 @@ const ROUTE_META = {
     description:
       'Founder, security practitioner, and full-stack systems builder working across AI systems, application security, hardware research, and production platforms.',
   },
-  '/work': {
-    title: 'Work — Nikhil Nagpure',
+  '/projects': {
+    title: 'Projects — Nikhil Nagpure',
     description:
-      'Selected systems: NAAVIS autonomous intelligence, API security platform, wireless hardware research, shipped product systems.',
+      'Every system built or contributed to: open source security tools, AI experiments, production platforms, and hardware research.',
   },
-  '/work/naavis': {
-    title: 'NAAVIS Case Study — Nikhil Nagpure',
+  '/projects/naavis': {
+    title: 'NAAVIS — Nikhil Nagpure',
     description:
       'A privacy-first autonomous intelligence system: persistent memory, consent-gated perception, action layers, and owner trust controls.',
   },
-  '/projects': {
-    title: 'Projects Archive — Nikhil Nagpure',
+  '/projects/aline2': {
+    title: 'ALine2 — Nikhil Nagpure',
     description:
-      'The public build archive: ~20 open-source security tools, AI experiments, Linux utilities, and product systems.',
+      'Full-stack social-media platform: web app, backend API, Android app, and superadmin dashboard — live in production.',
+  },
+  '/projects/tcmone': {
+    title: 'TCMONE — Nikhil Nagpure',
+    description:
+      'Ed-tech platform for virtual and physical classes, labs, and student workflows — live at thecodemunk.in.',
+  },
+  '/projects/davcreations': {
+    title: 'DavCreations — Nikhil Nagpure',
+    description:
+      'Multivendor commerce platform with full CMS, ERP, and HRM modules — built under Shadownik.',
+  },
+  '/projects/cuboidpilot': {
+    title: 'CuboidPilot — Nikhil Nagpure',
+    description:
+      'Company management operating system for CuboidSoft — admin workflows, dashboards, and operational tooling.',
+  },
+  '/projects/comprehensive-pentest-framework': {
+    title: 'Comprehensive Pentest Framework — Nikhil Nagpure',
+    description:
+      'Multi-platform authorised security testing framework with 22+ modules.',
+  },
+  '/projects/esp32-csi-sensing': {
+    title: 'ESP32 CSI Sensing — Nikhil Nagpure',
+    description:
+      'WiFi CSI capture, live visualisation, and presence detection.',
   },
   '/experience': {
     title: 'Work Experience — Nikhil Nagpure',
     description:
       'Verified roles: Co-Founder & Technical Lead at CuboidSoft, Founding Engineer at Pawan Technologies, Founder of Shadownik, offensive-security internships.',
+  },
+  '/experience/cuboidsoft': {
+    title: 'CuboidSoft — Nikhil Nagpure',
+    description:
+      'Co-Founder & Technical Lead: engineering lead for production platforms, security-first architecture, and product delivery.',
+  },
+  '/experience/pawan-technologies': {
+    title: 'Pawan Technologies — Nikhil Nagpure',
+    description:
+      'Founding Engineer: built the technical foundation, shipped the first production systems, and established engineering practices.',
+  },
+  '/experience/shadownik': {
+    title: 'Shadownik — Nikhil Nagpure',
+    description:
+      'Founder: independent security and full-stack venture. DavCreations commerce platform and related systems.',
+  },
+  '/experience/inlighnx-global': {
+    title: 'Inlighnx Global — Nikhil Nagpure',
+    description:
+      'Offensive Cybersecurity Intern: penetration testing, vulnerability assessment, and security reporting.',
+  },
+  '/experience/internship-studio': {
+    title: 'Internship Studio — Nikhil Nagpure',
+    description:
+      'Ethical Hacking Intern: security fundamentals, lab exercises, and structured learning.',
   },
   '/achievements': {
     title: 'Achievements & Certifications — Nikhil Nagpure',
@@ -79,22 +129,6 @@ const ROUTE_META = {
   '/education': {
     title: 'Education — Nikhil Nagpure',
     description: 'B.Tech CSE Cybersecurity from VIT (CGPA 8.33), CEH, CNSP, PEH, IELTS 7.5 certifications.',
-  },
-  '/work/aline2': {
-    title: 'ALine2 Case Study — Nikhil Nagpure',
-    description: 'Full-stack social-media platform: web app, backend API, Android app, and superadmin dashboard — live in production.',
-  },
-  '/work/tcmone': {
-    title: 'TCMONE Case Study — Nikhil Nagpure',
-    description: 'Ed-tech platform for virtual and physical classes, labs, and student workflows — live at thecodemunk.in.',
-  },
-  '/work/davcreations': {
-    title: 'DavCreations Case Study — Nikhil Nagpure',
-    description: 'Multivendor commerce platform with full CMS, ERP, and HRM modules — built under Shadownik.',
-  },
-  '/work/cuboidpilot': {
-    title: 'CuboidPilot Case Study — Nikhil Nagpure',
-    description: 'Company management operating system for CuboidSoft — admin workflows, dashboards, and operational tooling.',
   },
   '/contact': {
     title: 'Contact — Nikhil Nagpure',

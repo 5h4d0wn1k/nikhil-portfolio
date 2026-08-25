@@ -1,1 +1,3 @@
+/work /projects 301
+/work/:slug /projects/:slug 301
 /* /index.html 200
