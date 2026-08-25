@@ -1,11 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext, useContext } from 'react';
 import { posts } from './content';
-import { projects as allProjects, workExperience } from './data/projects';
+import { projects as staticProjects, workExperience as staticExperience } from './data/projects';
 import './experience.css';
 
 const notes = posts.map(p=>({slug:p.id,type:p.type,date:p.date,title:p.title,deck:p.dek,body:p.body}));
 
 const skills = ['Secure product engineering','Application security','AI systems & automation','Linux & networking','Hardware / wireless research','Cloud & release systems'];
+
+const DataContext = createContext({ projects: staticProjects, experience: staticExperience, loading: false });
+
+function DataProvider({ children }) {
+  const [projects, setProjects] = useState(staticProjects);
+  const [experience, setExperience] = useState(staticExperience);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (typeof fetch === 'undefined') { setLoading(false); return; }
+    Promise.all([
+      fetch('/api/projects').then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch('/api/experience').then(r => r.ok ? r.json() : null).catch(() => null),
+    ]).then(([proj, exp]) => {
+      if (!cancelled) {
+        if (proj && proj.length > 0) setProjects(proj);
+        if (exp && exp.length > 0) setExperience(exp);
+        setLoading(false);
+      }
+    }).catch(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  return <DataContext.Provider value={{ projects, experience, loading }}>{children}</DataContext.Provider>;
+}
 
 function Nav(){const [open,setOpen]=useState(false);return <><a className="skip-link" href="#main">Skip to content</a><header className="topbar"><a className="wordmark" href="/">CYN<span>I</span>K <small>OPERATOR</small></a><nav className={open?'open':''}><a href="/projects">Projects</a><a href="/experience">Experience</a><a href="/achievements">Achievements</a><a href="/publications">Publications</a><a href="/education">Education</a><a href="/journal">Journal</a><a href="/about">Profile</a></nav><a className="talk" href="/contact">Start a signal <b>↗</b></a><button className="nav-toggle" onClick={()=>setOpen(!open)} aria-label="Menu">{open?'×':'≡'}</button></header></>}
 function Signal(){return <div className="signal" aria-hidden="true"><i/><i/><i/><i/><i/></div>}
@@ -14,92 +40,20 @@ function Footer(){return <footer className="footer"><p>BUILD CAREFULLY. LEARN IN
 
 function ProjectArt({p,slug}){return <div className={'project-art '+(p.color||'acid')}><div className="art-top"><span>SYS / {p.number||slug}</span><b>{p.status}</b></div><div className="circuit"><i/><i/><i/><i/><i/></div><div className="readout">{(p.tech||p.tags||[]).join(' · ')}</div></div>}
 
-function Home(){return <><Nav/><main id="main"><section className="home-hero"><div className="field"/><p className="kicker">NIKHIL NAGPURE / SYSTEMS OPERATOR</p><p className="hero-side">Founder · Security practitioner ·<br/>full-stack systems builder.</p><div className="name"><span>NIKH<span>I</span>L</span><strong>NAGPURE</strong></div><div className="hero-foot"><div><Signal/><small>OPERATING ACROSS AI SYSTEMS,<br/>SECURITY, NETWORKS & PRODUCTS</small></div><a className="orb" href="/projects">ENTER<br/>THE WORK <b>↓</b></a><p>Building things the human<br/>timeline remembers.</p></div></section><section className="manifesto"><p>AMBITION BECOMES REAL<br/>WHEN THE <em>SYSTEM HOLDS.</em></p><div><span><b>57</b> PUBLIC REPOSITORIES</span><span><b>06</b> CONNECTED DISCIPLINES</span><span><b>01</b> OPERATOR</span></div></section><section className="home-work"><div className="section-label"><p className="kicker">01 / SELECTED SYSTEMS</p><h2>Proof,<br/><em>not posturing.</em></h2><p>I work across the whole shape of a system: the interface, the data, the infrastructure, the threat model, and the release.</p></div><div className="project-grid">{allProjects.slice(0,6).map(p=><a className="project-card" href={'/projects/'+p.slug} key={p.slug}><ProjectArt p={p} slug={p.slug}/><div className="project-info"><p>{p.category}</p><h3>{p.name}</h3><span>VIEW DETAILS <b>↗</b></span></div></a>)}</div><a className="line-cta" href="/projects">VIEW ALL PROJECTS <b>→</b></a></section><section className="axis"><p className="kicker">02 / OPERATOR AXIS</p><h2>See the whole<br/><em>system.</em></h2><div className="skill-list">{skills.map((s,i)=><div key={s}><span>0{i+1}</span><strong>{s}</strong><b>↗</b></div>)}</div></section><section className="home-journal"><div><p className="kicker">03 / SIGNAL JOURNAL</p><h2>Notes from the<br/><em>edge of the build.</em></h2></div><div>{notes.slice(0,3).map(n=><a className="note-preview" href={'/journal/'+n.slug} key={n.slug}><p>{n.type} / {n.date}</p><h3>{n.title}</h3><span>{n.deck}</span><b>↗</b></a>)}</div></section></main><Footer/></>}
+function Home(){const {projects}=useContext(DataContext);return <><Nav/><main id="main"><section className="home-hero"><div className="field"/><p className="kicker">NIKHIL NAGPURE / SYSTEMS OPERATOR</p><p className="hero-side">Founder · Security practitioner ·<br/>full-stack systems builder.</p><div className="name"><span>NIKH<span>I</span>L</span><strong>NAGPURE</strong></div><div className="hero-foot"><div><Signal/><small>OPERATING ACROSS AI SYSTEMS,<br/>SECURITY, NETWORKS & PRODUCTS</small></div><a className="orb" href="/projects">ENTER<br/>THE WORK <b>↓</b></a><p>Building things the human<br/>timeline remembers.</p></div></section><section className="manifesto"><p>AMBITION BECOMES REAL<br/>WHEN THE <em>SYSTEM HOLDS.</em></p><div><span><b>57</b> PUBLIC REPOSITORIES</span><span><b>06</b> CONNECTED DISCIPLINES</span><span><b>01</b> OPERATOR</span></div></section><section className="home-work"><div className="section-label"><p className="kicker">01 / SELECTED SYSTEMS</p><h2>Proof,<br/><em>not posturing.</em></h2><p>I work across the whole shape of a system: the interface, the data, the infrastructure, the threat model, and the release.</p></div><div className="project-grid">{projects.slice(0,6).map(p=><a className="project-card" href={'/projects/'+p.slug} key={p.slug}><ProjectArt p={p} slug={p.slug}/><div className="project-info"><p>{p.category}</p><h3>{p.name}</h3><span>VIEW DETAILS <b>↗</b></span></div></a>)}</div><a className="line-cta" href="/projects">VIEW ALL PROJECTS <b>→</b></a></section><section className="axis"><p className="kicker">02 / OPERATOR AXIS</p><h2>See the whole<br/><em>system.</em></h2><div className="skill-list">{skills.map((s,i)=><div key={s}><span>0{i+1}</span><strong>{s}</strong><b>↗</b></div>)}</div></section><section className="home-journal"><div><p className="kicker">03 / SIGNAL JOURNAL</p><h2>Notes from the<br/><em>edge of the build.</em></h2></div><div>{notes.slice(0,3).map(n=><a className="note-preview" href={'/journal/'+n.slug} key={n.slug}><p>{n.type} / {n.date}</p><h3>{n.title}</h3><span>{n.deck}</span><b>↗</b></a>)}</div></section></main><Footer/></>}
 
-function Projects(){return <Frame eyebrow="01 / PROJECTS" title={<>All<br/><em>projects.</em></>} aside="Every system I've built or contributed to — open source, private, and production."><section className="work-index">{allProjects.map(p=><article key={p.slug} className="case-row"><ProjectArt p={p} slug={p.slug}/><div><p className="kicker">{p.category}</p><h2>{p.name}</h2><p>{p.summary}</p><div className="tagrow">{(p.tech||[]).map(x=><span key={x}>{x}</span>)}</div></div><div className="proof-list">{(p.proof||[]).map(x=><span key={x}>+ {x}</span>)}</div><a href={'/projects/'+p.slug}>DETAILS <b>↗</b></a></article>)}</section></Frame>}
+function Projects(){const {projects}=useContext(DataContext);return <Frame eyebrow="01 / PROJECTS" title={<>All<br/><em>projects.</em></>} aside="Every system I've built or contributed to — open source, private, and production."><section className="work-index">{projects.map(p=><article key={p.slug} className="case-row"><ProjectArt p={p} slug={p.slug}/><div><p className="kicker">{p.category}</p><h2>{p.name}</h2><p>{p.summary}</p><div className="tagrow">{(p.tech||[]).map(x=><span key={x}>{x}</span>)}</div></div><div className="proof-list">{(p.proof||[]).map(x=><span key={x}>+ {x}</span>)}</div><a href={'/projects/'+p.slug}>DETAILS <b>↗</b></a></article>)}</section></Frame>}
 
-function ProjectDetail({slug}){
-  const p = allProjects.find(x=>x.slug===slug);
+function ProjectDetail({slug}){const {projects}=useContext(DataContext);const p=projects.find(x=>x.slug===slug);
   if(!p) return <Frame eyebrow="NOT FOUND" title={<>Project<br/><em>not found.</em></>} aside="This project doesn't exist."><section className="case-hero"><div><p>No project found with slug "{slug}".</p><a className="line-cta" href="/projects">BACK TO PROJECTS <b>→</b></a></div></section></Frame>;
-  const highlights = p.highlights||[];
-  const links = p.links||[];
-  const proof = p.proof||[];
-  return <Frame eyebrow={`PROJECT / ${p.category}`} title={<>{p.name}<span className="accent-dot">.</span></>} aside={p.summary}>
-    <section className="case-hero">
-      <ProjectArt p={p} slug={p.slug}/>
-      <div>
-        <p className="kicker">{p.category} · {p.status}</p>
-        <h2>{p.name}<br/><em>{p.summary}</em></h2>
-        <p>{p.description}</p>
-      </div>
-    </section>
-    <section className="case-statement">
-      <span>TECH STACK</span>
-      <p>{(p.tech||[]).join(' · ')}</p>
-      {proof.length>0&&<small>{proof.join(' — ')}</small>}
-    </section>
-    {highlights.length>0&&<section className="system-layers">
-      <div>
-        <p className="kicker">HIGHLIGHTS</p>
-        <h2>What it<br/><em>does.</em></h2>
-      </div>
-      <div>
-        {highlights.map((h,i)=><article key={h}><span>{String(i+1).padStart(2,'0')}</span><h3>{h.split(':')[0]||h}</h3><p>{h}</p></article>)}
-      </div>
-    </section>}
-    {proof.length>0&&<section className="case-proof">
-      <p className="kicker">VERIFIED STATUS</p>
-      <div className="proof-numbers">
-        {proof.slice(0,3).map(x=><div key={x}><b>{x.split('—')[0].split(':')[0]}</b><span>{x}</span></div>)}
-      </div>
-    </section>}
-    {links.length>0&&<section className="case-cta">
-      <p>{p.name}.</p>
-      {links.map(l=><a key={l.url} href={l.url} target="_blank" rel="noreferrer">{l.label} ↗</a>)}
-    </section>}
-  </Frame>;
-}
+  const highlights=p.highlights||[];const links=p.links||[];const proof=p.proof||[];
+  return <Frame eyebrow={`PROJECT / ${p.category}`} title={<>{p.name}<span className="accent-dot">.</span></>} aside={p.summary}><section className="case-hero"><ProjectArt p={p} slug={p.slug}/><div><p className="kicker">{p.category} · {p.status}</p><h2>{p.name}<br/><em>{p.summary}</em></h2><p>{p.description}</p></div></section><section className="case-statement"><span>TECH STACK</span><p>{(p.tech||[]).join(' · ')}</p>{proof.length>0&&<small>{proof.join(' — ')}</small>}</section>{highlights.length>0&&<section className="system-layers"><div><p className="kicker">HIGHLIGHTS</p><h2>What it<br/><em>does.</em></h2></div><div>{highlights.map((h,i)=><article key={h}><span>{String(i+1).padStart(2,'0')}</span><h3>{h.split(':')[0]||h}</h3><p>{h}</p></article>)}</div></section>}{proof.length>0&&<section className="case-proof"><p className="kicker">VERIFIED STATUS</p><div className="proof-numbers">{proof.slice(0,3).map(x=><div key={x}><b>{x.split('—')[0].split(':')[0]}</b><span>{x}</span></div>)}</div></section>}{links.length>0&&<section className="case-cta"><p>{p.name}.</p>{links.map(l=><a key={l.url} href={l.url} target="_blank" rel="noreferrer">{l.label} ↗</a>)}</section>}</Frame>}
 
-function ExperienceList(){return <Frame eyebrow="02 / WORK EXPERIENCE" title={<>Roles with<br/><em>real weight.</em></>} aside="The verified timeline: every company, role, date, and what each one actually produced."><section className="xp-timeline">{workExperience.map(r=><a className="xp-item" href={'/experience/'+r.slug} key={r.slug}><span>{r.period}</span><div><h3>{r.role}</h3><p className="xp-org">{r.company}</p><p className="xp-desc">{r.summary}</p></div><i>→</i></a>)}</section></Frame>}
+function ExperienceList(){const {experience}=useContext(DataContext);return <Frame eyebrow="02 / WORK EXPERIENCE" title={<>Roles with<br/><em>real weight.</em></>} aside="The verified timeline: every company, role, date, and what each one actually produced."><section className="xp-timeline">{experience.map(r=><a className="xp-item" href={'/experience/'+r.slug} key={r.slug}><span>{r.period}</span><div><h3>{r.role}</h3><p className="xp-org">{r.company}</p><p className="xp-desc">{r.summary}</p></div><i>→</i></a>)}</section></Frame>}
 
-function ExperienceDetail({slug}){
-  const r = workExperience.find(x=>x.slug===slug);
+function ExperienceDetail({slug}){const {experience}=useContext(DataContext);const r=experience.find(x=>x.slug===slug);
   if(!r) return <Frame eyebrow="NOT FOUND" title={<>Role<br/><em>not found.</em></>} aside="This role doesn't exist."><section className="case-hero"><div><p>No role found with slug "{slug}".</p><a className="line-cta" href="/experience">BACK TO EXPERIENCE <b>→</b></a></div></section></Frame>;
-  return <Frame eyebrow={`${r.period}`} title={<>{r.role}<span className="accent-dot">.</span></>} aside={r.company}>
-    <section className="case-hero">
-      <div className="project-showcase"><span>{r.company}<br/>ROLE</span><i/><i/><i/></div>
-      <div>
-        <p className="kicker">{r.status}</p>
-        <h2>{r.role}<br/><em>{r.company}</em></h2>
-        <p>{r.description}</p>
-      </div>
-    </section>
-    <section className="case-statement">
-      <span>PERIOD</span>
-      <p>{r.period}</p>
-      <small>{r.company} — {r.role}</small>
-    </section>
-    {r.responsibilities.length>0&&<section className="system-layers">
-      <div>
-        <p className="kicker">RESPONSIBILITIES</p>
-        <h2>What I<br/><em>did.</em></h2>
-      </div>
-      <div>
-        {r.responsibilities.map((resp,i)=><article key={resp}><span>{String(i+1).padStart(2,'0')}</span><h3>{resp}</h3><p>{resp}</p></article>)}
-      </div>
-    </section>}
-    {r.tech.length>0&&<section className="case-proof">
-      <p className="kicker">TECHNOLOGIES</p>
-      <div className="proof-numbers">
-        {r.tech.map(t=><div key={t}><b>{t}</b><span>{t}</span></div>)}
-      </div>
-    </section>}
-    {r.products.length>0&&<section className="case-cta">
-      <p>Products built.</p>
-      {r.products.map(p=><span key={p} style={{marginRight:'20px'}}>{p}</span>)}
-    </section>}
-  </Frame>;
-}
+  return <Frame eyebrow={`${r.period}`} title={<>{r.role}<span className="accent-dot">.</span></>} aside={r.company}><section className="case-hero"><div className="project-showcase"><span>{r.company}<br/>ROLE</span><i/><i/><i/></div><div><p className="kicker">{r.status}</p><h2>{r.role}<br/><em>{r.company}</em></h2><p>{r.description}</p></div></section><section className="case-statement"><span>PERIOD</span><p>{r.period}</p><small>{r.company} — {r.role}</small></section>{r.responsibilities.length>0&&<section className="system-layers"><div><p className="kicker">RESPONSIBILITIES</p><h2>What I<br/><em>did.</em></h2></div><div>{r.responsibilities.map((resp,i)=><article key={resp}><span>{String(i+1).padStart(2,'0')}</span><h3>{resp}</h3><p>{resp}</p></article>)}</div></section>}{r.tech.length>0&&<section className="case-proof"><p className="kicker">TECHNOLOGIES</p><div className="proof-numbers">{r.tech.map(t=><div key={t}><b>{t}</b><span>{t}</span></div>)}</div></section>}{r.products.length>0&&<section className="case-cta"><p>Products built.</p>{r.products.map(p=><span key={p} style={{marginRight:'20px'}}>{p}</span>)}</section>}</Frame>}
 
 function Achievements(){const certs=[['CEH','Certified Ethical Hacker','EC-COUNCIL'],['CNSP','Certified Network Security Practitioner','THE SECOPS GROUP'],['PEH','Practical Ethical Hacking','TCM SECURITY'],['7.5 / C1','IELTS — English proficiency','BRITISH COUNCIL'],['PY4E','Python for Everybody Specialization','UNIV. OF MICHIGAN · COURSERA'],['DSA / C++','HPC Data Structures & Algorithms','IAMNEO']];const recog=[['TryHackMe','TOP 25% GLOBALLY','Active practice profile across defensive and offensive security tracks.'],['CyVIT CTF','RANK 36','Capture-the-flag competition at VIT.'],['HackerOne','BUG BOUNTY RESEARCHER','Active recon, testing, and reporting practice on live programs.'],['Smart India Hackathon','PARTICIPANT · 2023','National-scale hackathon edition.'],['Kavach','PARTICIPANT','National cybersecurity competition.'],['DSA Dash','PARTICIPANT','Competitive programming sprint.'],['thecodemunk.in','INSTRUCTOR','Taught Git & GitHub classes to working learners.'],['DEFCON Franklin','VOLUNTEER','IT security project volunteer and participant.'],['Health O Tech Club','FORMER CORE MEMBER · VIT','Organized hackathons and security events on campus.']];return <Frame eyebrow="03 / ACHIEVEMENTS" title={<>Recognition,<br/><em>verified only.</em></>} aside="Every claim here maps to a certificate, ranking, or record I can produce on request."><div className="kicker ach-kicker">CERTIFICATIONS</div><section className="cert-grid">{certs.map(c=><article key={c[0]}><b>{c[0]}</b><h3>{c[1]}</h3><span>{c[2]}</span></article>)}</section><section className="recog"><p className="kicker">RECOGNITION & COMPETITION</p><div>{recog.map(r=><article key={r[0]+r[1]}><b>{r[1]}</b><h3>{r[0]}</h3><p>{r[2]}</p></article>)}</div></section></Frame>}
 
@@ -115,5 +69,7 @@ function Now(){return <Frame eyebrow="05 / NOW" title={<>Currently<br/><em>in mo
 
 function Contact(){return <Frame eyebrow="06 / OPEN CHANNEL" title={<>A difficult problem<br/><em>is a good start.</em></>} aside="For selected product, security, AI, and systems work."><section className="contact-panel"><p>Bring the real constraint, the ugly edge case, or the ambitious thing that needs an honest technical plan.</p><a href="mailto:nikhilnagpure203@gmail.com">nikhilnagpure203@gmail.com <b>↗</b></a><div><a href="https://github.com/5h4d0wn1k" target="_blank" rel="noreferrer">GITHUB</a><a href="https://www.linkedin.com/in/nikhilnagpure24/" target="_blank" rel="noreferrer">LINKEDIN</a></div></section></Frame>}
 
-function Experience(){const [progress,setProgress]=useState(0);useEffect(()=>{const f=()=>setProgress((scrollY/(document.body.scrollHeight-innerHeight))*100||0);f();addEventListener('scroll',f);return()=>removeEventListener('scroll',f)},[]);const path=location.pathname.replace(/\/$/,'')||'/';const post=notes.find(n=>path==='/journal/'+n.slug);const projectSlug=path.match(/^\/projects\/(.+)$/)?.[1];const expSlug=path.match(/^\/experience\/(.+)$/)?.[1];let page=path==='/projects'&&!projectSlug?<Projects/>:projectSlug?<ProjectDetail slug={projectSlug}/>:path==='/experience'&&!expSlug?<ExperienceList/>:expSlug?<ExperienceDetail slug={expSlug}/>:path==='/journal'?<Journal/>:post?<Journal post={post}/>:path==='/about'?<About/>:path==='/achievements'?<Achievements/>:path==='/publications'?<Publications/>:path==='/education'?<Education/>:path==='/now'?<Now/>:path==='/contact'?<Contact/>:<Home/>;return <><div className="progress" style={{transform:`scaleX(${progress/100})`}}/>{page}</>}
+function Router(){const [progress,setProgress]=useState(0);useEffect(()=>{const f=()=>setProgress((scrollY/(document.body.scrollHeight-innerHeight))*100||0);f();addEventListener('scroll',f);return()=>removeEventListener('scroll',f)},[]);const path=location.pathname.replace(/\/$/,'')||'/';const post=notes.find(n=>path==='/journal/'+n.slug);const projectSlug=path.match(/^\/projects\/(.+)$/)?.[1];const expSlug=path.match(/^\/experience\/(.+)$/)?.[1];let page=path==='/projects'&&!projectSlug?<Projects/>:projectSlug?<ProjectDetail slug={projectSlug}/>:path==='/experience'&&!expSlug?<ExperienceList/>:expSlug?<ExperienceDetail slug={expSlug}/>:path==='/journal'?<Journal/>:post?<Journal post={post}/>:path==='/about'?<About/>:path==='/achievements'?<Achievements/>:path==='/publications'?<Publications/>:path==='/education'?<Education/>:path==='/now'?<Now/>:path==='/contact'?<Contact/>:<Home/>;return <><div className="progress" style={{transform:`scaleX(${progress/100})`}}/>{page}</>}
+
+function Experience(){return <DataProvider><Router/></DataProvider>}
 export default Experience;

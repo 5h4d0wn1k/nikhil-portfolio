@@ -1,0 +1,8 @@
+name = "cynik-operator"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "PORTFOLIO_DB"
+database_name = "portfolio-db"
+database_id = "6ce8a035-fe4f-4fd5-9484-dda0a0784b0e"
