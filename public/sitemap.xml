@@ -2,10 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://cynik-operator.pages.dev/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
   <url><loc>https://cynik-operator.pages.dev/work</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://cynik-operator.pages.dev/work/naavis</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://cynik-operator.pages.dev/work/aline2</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://cynik-operator.pages.dev/work/tcmone</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://cynik-operator.pages.dev/work/davcreations</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://cynik-operator.pages.dev/work/cuboidpilot</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://cynik-operator.pages.dev/projects</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://cynik-operator.pages.dev/experience</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://cynik-operator.pages.dev/achievements</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://cynik-operator.pages.dev/publications</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://cynik-operator.pages.dev/education</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://cynik-operator.pages.dev/journal</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://cynik-operator.pages.dev/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://cynik-operator.pages.dev/now</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>

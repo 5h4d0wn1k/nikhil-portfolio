@@ -74,7 +74,27 @@ const ROUTE_META = {
   },
   '/now': {
     title: 'Now — Nikhil Nagpure',
-    description: 'Currently in motion: NAAVIS, API security, and ESP32 wireless research.',
+    description: 'Currently in motion: NAAVIS, wireless research, bug bounty, and open source.',
+  },
+  '/education': {
+    title: 'Education — Nikhil Nagpure',
+    description: 'B.Tech CSE Cybersecurity from VIT (CGPA 8.33), CEH, CNSP, PEH, IELTS 7.5 certifications.',
+  },
+  '/work/aline2': {
+    title: 'ALine2 Case Study — Nikhil Nagpure',
+    description: 'Full-stack social-media platform: web app, backend API, Android app, and superadmin dashboard — live in production.',
+  },
+  '/work/tcmone': {
+    title: 'TCMONE Case Study — Nikhil Nagpure',
+    description: 'Ed-tech platform for virtual and physical classes, labs, and student workflows — live at thecodemunk.in.',
+  },
+  '/work/davcreations': {
+    title: 'DavCreations Case Study — Nikhil Nagpure',
+    description: 'Multivendor commerce platform with full CMS, ERP, and HRM modules — built under Shadownik.',
+  },
+  '/work/cuboidpilot': {
+    title: 'CuboidPilot Case Study — Nikhil Nagpure',
+    description: 'Company management operating system for CuboidSoft — admin workflows, dashboards, and operational tooling.',
   },
   '/contact': {
     title: 'Contact — Nikhil Nagpure',

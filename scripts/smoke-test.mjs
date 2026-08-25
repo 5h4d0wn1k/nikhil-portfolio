@@ -5,7 +5,7 @@ import { join, extname } from 'path';
 
 const dist = join(process.cwd(), 'dist');
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.xml': 'application/xml', '.txt': 'text/plain' };
-const routes = ['/', '/work', '/work/naavis', '/projects', '/experience', '/achievements', '/publications', '/journal', '/journal/systems-over-features', '/about', '/now', '/contact'];
+const routes = ['/', '/work', '/work/naavis', '/work/aline2', '/work/tcmone', '/work/davcreations', '/work/cuboidpilot', '/projects', '/experience', '/achievements', '/publications', '/education', '/journal', '/journal/systems-over-features', '/about', '/now', '/contact'];
 const server = createServer((req, res) => {
   const path = decodeURIComponent(req.url.split('?')[0]);
   const candidate = join(dist, path);
@@ -19,8 +19,10 @@ await new Promise(r => server.listen(4199, r));
 
 const expect = {
   '/': 'SELECTED SYSTEMS', '/work': 'WORK INDEX', '/work/naavis': 'NAAVIS',
+  '/work/aline2': 'ALINE2', '/work/tcmone': 'TCMONE', '/work/davcreations': 'DAVCREATIONS', '/work/cuboidpilot': 'CUBOIDPILOT',
   '/projects': 'BUILD ARCHIVE', '/experience': 'Co-Founder & Technical Lead',
   '/achievements': 'EC-COUNCIL', '/publications': 'Self-Cleaning Glasses Case System',
+  '/education': 'B.TECH',
   '/journal': 'SIGNAL JOURNAL', '/journal/systems-over-features': 'invariants',
   '/about': 'One operator', '/now': 'CURRENTLY', '/contact': 'OPEN CHANNEL'
 };
